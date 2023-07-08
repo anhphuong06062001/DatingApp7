@@ -16,7 +16,7 @@ namespace API.Extensions
             });
             services.AddCors();
             services.AddScoped<ITokenServeice, TokenService>();
-
+            
             return services;
         }
         
