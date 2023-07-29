@@ -26,7 +26,7 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
-        // [AllowAnonymous]
+        // [Authorize(Roles = "Admin")]
         [HttpGet] 
         public async Task<ActionResult<PagedList<MemberDTO>>> GetUser([FromQuery]UserParams userParams)
         {
@@ -35,7 +35,7 @@ namespace API.Controllers
             
             if(string.IsNullOrEmpty(userParams.Gender))
             {
-                userParams.Gender = currentUser.Gender =="male" ? "female" : "male";
+                userParams.Gender = currentUser.Gender == "male" ? "female" : "male";
             }
 
             var users = await _userRepository.GetMembersAsync(userParams);
@@ -44,6 +44,8 @@ namespace API.Controllers
                 users.TotalCount, users.TotalPages));
             return Ok(users);
         }
+
+        // [Authorize(Roles = "Member")]
         [HttpGet("{username}")]
         public async Task<ActionResult<MemberDTO>> GetUser(string username){
            return await _userRepository.GetMemberAsync(username);
